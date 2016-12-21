@@ -9,13 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import design.DB;
+import design.DBConn;
+import gui.LoginForm;
+import javafx.application.Application;
 /**
  *
  * @author Etti
  */
-public class Design {
-    static DB dbc;
+public abstract class Design extends Application{
+    static DBConn dbc;
     /**
      * @param args the command line arguments
      * @throws java.sql.SQLException
@@ -29,30 +31,23 @@ public class Design {
             
             
             System.err.println("Example Query");
-            
-            //Initiate a query and return to ResultSet tmp
-            ResultSet tmp = DB.query("select * from customer");
-            
-            //While has rows
-            while(tmp.next()){
-                //Each itiration is a row
-                String id = tmp.getString(1);
-                String firstName = tmp.getString("firstName");
-                String lastName = tmp.getString("lastName");
-                
-                System.err.println("Customer #"+id+" "+firstName+" "+lastName);
-            }
+            LoginForm login = new LoginForm();
+            login.setVisible(true);
         
     }
     
     
     public static void connectDB(){
-        try {
-            dbc = new DB("C:\\Users\\Etti\\Desktop\\Univ\\design\\Ex2\\DB.accdb"); 
+        try { //
+            dbc = new DBConn("C:\\Users\\Etti\\Documents\\NetBeansProjects\\Login\\src\\design\\DB.accdb"); 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Design.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Design.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static DBConn getCon(){
+        return dbc;
     }
 }

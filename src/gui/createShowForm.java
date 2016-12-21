@@ -5,9 +5,10 @@
  */
 package gui;
 
-import design.DB;
+import design.DBConn;
 import design.Design;
 import entity.Artist;
+import entity.Show;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,17 +20,20 @@ import javax.swing.*;
  */
 public class createShowForm extends javax.swing.JFrame {
     
-   DB conn = null;
-   ResultSet rs = null;
    
+   ResultSet rs = null;
+
     /**
      * Creates new form createShow
      */
     public createShowForm() {
+        setUndecorated(true);
         initComponents();
+        setLocationRelativeTo(null);
+        System.err.println("Activated createShowForm");
      try
     {    
-        ResultSet rs = DB.query("select * from Artist Where Artist.agentId="+DB.getAgentConnected().getAgentID());
+        ResultSet rs = Design.getCon().query("select * from Artist Where Artist.agentId=\""+DBConn.getAgentConnected().getAgentID()+"\"");
         jComboBoxArtists.removeAllItems();
         jComboBoxArtists.addItem("Select Main Artist");
      
@@ -40,12 +44,12 @@ public class createShowForm extends javax.swing.JFrame {
             jComboBoxArtists.addItem(stageName);
         }
         
-        ResultSet res = DB.query("Select showPlace.placeNumber, showPlace.placeName, Agent.agentId\n"+
+        ResultSet res = DBConn.query("Select showPlace.placeNumber, Agent.agentId\n"+
          "Form showPlace INNER JOIN (Agent INNER JOIN agentChoosePlace ON Agent.agentId = agentChoosePlace.agentId) ON showPlace.placeNumber = agentChoosePlace.placeNumber\n"+
-         "WHERE (((Agent.agentId)=[agentChoosePlace].[agentId]) AND ((showPalce.placeNumber)=[agentChoosePlace].[showPlace])AND ((Agent.agentId)))="+DB.getAgentConnected().getAgentID());
+         "WHERE (((Agent.agentId)=[agentChoosePlace].[agentId]) AND ((showPalce.placeNumber)=[agentChoosePlace].[showPlace])AND ((Agent.agentId)))="+DBConn.getAgentConnected().getAgentID());
          jComboBoxPlaces.removeAllItems();
          jComboBoxPlaces.addItem("Select show place");
-                
+             
          while(res.next()){
             // String 
          }
@@ -79,6 +83,7 @@ public class createShowForm extends javax.swing.JFrame {
         txtPlace = new javax.swing.JTextField();
         listOtherArtists = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
         jComboBoxOtherArtists = new javax.swing.JComboBox<>();
         bg = new javax.swing.JLabel();
 
@@ -175,6 +180,20 @@ public class createShowForm extends javax.swing.JFrame {
         getContentPane().add(listOtherArtists);
         listOtherArtists.setBounds(220, 370, 35, 100);
 
+        jButton1.setText("add");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(430, 470, 51, 23);
+
         jComboBoxOtherArtists.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBoxOtherArtists.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -212,11 +231,11 @@ public class createShowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxArtistsActionPerformed
 
     private void txtArtistNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArtistNameActionPerformed
-        return;
+        
     }//GEN-LAST:event_txtArtistNameActionPerformed
 
     private void jComboBoxArtistsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxArtistsItemStateChanged
-        txtArtistName.setText(jComboBoxArtists.getSelectedItem().toString());
+        //fix txtArtistName.setText(jComboBoxArtists.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBoxArtistsItemStateChanged
 
     private void jComboBoxPlacesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPlacesActionPerformed
@@ -226,6 +245,15 @@ public class createShowForm extends javax.swing.JFrame {
     private void jComboBoxPlacesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxPlacesItemStateChanged
         txtPlace.setText(jComboBoxPlaces.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBoxPlacesItemStateChanged
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        Show newShow = new Show(txtArtistName.getText(), txtPlace.getText());
+            // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +293,7 @@ public class createShowForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBoxArtists;
     private javax.swing.JComboBox<String> jComboBoxOtherArtists;
     private javax.swing.JComboBox<String> jComboBoxPlaces;

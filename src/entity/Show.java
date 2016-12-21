@@ -22,6 +22,15 @@ public class Show {
     private int numberOfLeftTickets;
 
     // ---------------------------constractor--------------------------------
+        public Show(int showNumber, String mainArtist, Date dateAndHourOfShow, int placeNumber, int ticketPrice, int minimumAge) {
+        this.showNumber = showNumber;
+        this.mainArtist = mainArtist;
+        this.dateAndHourOfShow = dateAndHourOfShow;
+        this.placeNumber = placeNumber;
+        this.ticketPrice = ticketPrice;
+        this.minimumAge = minimumAge;
+    }
+    
     public Show(int showNumber, String mainArtist, Date dateAndHourOfShow, int placeNumber, String status, int ticketPrice, int minimumAge, int numberOfLeftTickets) {
         this.showNumber = showNumber;
         this.mainArtist = mainArtist;

@@ -13,7 +13,7 @@ import java.util.logging.*;
  *
  * @author Etti
  */
-public class DB {
+public class DBConn {
     private static Connection conn;
     private static Customer customerConnected;
     private static Agent agentConnected;
@@ -24,11 +24,11 @@ public class DB {
         return conn;
     }
     public static void setConn(Connection conn) {
-        DB.conn = conn;
+        DBConn.conn = conn;
     }
 
     public static void setArtistConnected(Artist artistConnected) {
-        DB.artistConnected = artistConnected;
+        DBConn.artistConnected = artistConnected;
     }
     public static Artist getArtistConnected() {
         return artistConnected;
@@ -38,11 +38,11 @@ public class DB {
         return agentConnected;
     }
     public static void setAgentConnected(Agent agentConnected) {
-        DB.agentConnected = agentConnected;
+        DBConn.agentConnected = agentConnected;
     }
     
     public static void setCustomerConnected(Customer customerConnected) {
-        DB.customerConnected = customerConnected;
+        DBConn.customerConnected = customerConnected;
     }
     public static Customer getCustomerConnected() {
         return customerConnected;
@@ -50,7 +50,7 @@ public class DB {
 //add all
      
      
-    public DB(String dburl) throws ClassNotFoundException, SQLException{
+    public DBConn(String dburl) throws ClassNotFoundException, SQLException{
         String driver="net.ucanaccess.jdbc.UcanaccessDriver";
         Class.forName(driver);
         conn=DriverManager.getConnection("jdbc:ucanaccess://"+dburl);
@@ -62,7 +62,7 @@ public class DB {
             Statement stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
         } catch (SQLException ex) {
-            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBConn.class.getName()).log(Level.SEVERE, null, ex);
         }
        
         return result;

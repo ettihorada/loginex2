@@ -5,7 +5,7 @@
  */
 package gui;
 
-import design.DB;
+import design.DBConn;
 import entity.Artist;
 import entity.Agent;
 import entity.Customer;
@@ -13,8 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import entity.Show;
 
 /**
  *
@@ -26,7 +28,9 @@ public class LoginForm extends javax.swing.JFrame {
      * Creates new form createNewShow
      */
     public LoginForm() {
+        setUndecorated(true);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -45,6 +49,7 @@ public class LoginForm extends javax.swing.JFrame {
         lblUserName = new javax.swing.JLabel();
         lblExit = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         lblbackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,7 +92,7 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblExit);
-        lblExit.setBounds(10, 480, 50, 40);
+        lblExit.setBounds(20, 460, 50, 40);
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -96,86 +101,95 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(10, 480, 40, 40);
+        jButton1.setBounds(20, 460, 40, 40);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/muza.jpg"))); // NOI18N
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(180, 230, 200, 90);
 
         lblbackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bgColdpla.jpg"))); // NOI18N
-        lblbackground.setText("jLabel1");
         getContentPane().add(lblbackground);
-        lblbackground.setBounds(-10, 10, 790, 530);
+        lblbackground.setBounds(0, 0, 530, 530);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
-         
-        String ext = new String (jPasswordField1.getPassword());
+
+        String ext = new String(jPasswordField1.getPassword());
         String user = jUserNameField1.getText();
         String pass = jPasswordField1.getText();
-        
+
         //Cycle through customers
         //Search if user = customer
         try {
-        ResultSet rs = DB.query("select * from Customer where customerId=\""+user+"\" AND Password=\""+pass+"\"");
-        
-            while(rs.next()){
-            
+            ResultSet rs = DBConn.query("select * from Customer where Customer.customerId=\"" + user + "\" AND Customer.Password=\"" + pass + "\"");
+
+            while (rs.next()) {
+
                 //Found Customer
                 String CustomerID = rs.getString("customerId");
                 String firstName = rs.getString("FirstName");
                 //continue
                 
                 Customer c = new Customer(CustomerID, firstName);
-                DB.setCustomerConnected(c);
-                JOptionPane.showMessageDialog(null, "Login Successful!");
+                DBConn.setCustomerConnected(c);
+                JOptionPane.showMessageDialog(null, "Logged in as Customer!");
+                
                 return;
             }
-        
-            rs = DB.query("select * from Agent where agentId=\""+user+"\" AND Password=\""+pass+"\"");
-        
-            while(rs.next()){
+
+            rs = DBConn.query("select * from Agent where agentId=\"" + user + "\" AND Password=\"" + pass + "\"");
+
+            while (rs.next()) {
                 //Found Agent
                 String AgentID = rs.getString("agentId");
                 String FirstName = rs.getString("firstName");
-                
+
                 Agent a = new Agent(AgentID, FirstName);
-                DB.setAgentConnected(a);
-                JOptionPane.showMessageDialog(null, "Login Successful!");
+                DBConn.setAgentConnected(a);
+                System.err.println("Agent logged in");
+                AgentForm ag = new AgentForm();
+                setVisible(false);
+                ag.setVisible(true);
                 return;
-                
+
             }
-            rs = DB.query(")Select * from Artist Where alphanumericCode=\""+user+"\" AND Password=\""+pass+"\"");
-            
-            while(rs.next()){
+            rs = DBConn.query(")Select * from Artist Where alphanumericCode=\"" + user + "\" AND Password=\"" + pass + "\"");
+
+            while (rs.next()) {
                 // Found artist
                 String alphanumericCode = rs.getString("alphanumericCode");
                 String stageName = rs.getString("stageName");
-                
-                Artist art = new Artist (alphanumericCode, stageName);
-                DB.setArtistConnected(art);
+
+                Artist art = new Artist(alphanumericCode, stageName);
+                DBConn.setArtistConnected(art);
                 JOptionPane.showMessageDialog(null, "Login successful !");
+                new createShowForm().setVisible(true);
+                this.dispose();
                 return;
             }
             //Cycle through agents
             //Search if user = agent
-            
+
             //.....
         } catch (SQLException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-         JOptionPane.showMessageDialog(null, "Login Faild!");
-         return;
-        
-        
+        JOptionPane.showMessageDialog(null, "Login Faild!");
+        return;
+
+
     }//GEN-LAST:event_lblLoginMouseClicked
 
     private void lblExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblExitMouseClicked
-                   // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_lblExitMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jButton1.setVisible(false);
         jButton1.setText(null);
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -216,6 +230,7 @@ public class LoginForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jUserNameField1;
     private javax.swing.JLabel lblExit;
