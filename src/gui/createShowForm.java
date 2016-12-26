@@ -9,6 +9,7 @@ import design.DBConn;
 import design.Design;
 import entity.Artist;
 import entity.Show;
+import java.awt.event.ItemEvent;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,13 +31,15 @@ public class createShowForm extends javax.swing.JFrame {
         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
+        
         System.err.println("Activated createShowForm");
      try
     {    
         ResultSet rs = Design.getCon().query("select * from Artist Where Artist.agentId=\""+DBConn.getAgentConnected().getAgentID()+"\"");
         jComboBoxArtists.removeAllItems();
         jComboBoxArtists.addItem("Select Main Artist");
-     
+     jComboBoxPlaces.removeAllItems();
+     jComboBoxPlaces.addItem("Select Place");
         while(rs.next()){
             String alphanumericCode = rs.getString("alphanumericCode");
             String stageName = rs.getString("stageName");
@@ -44,14 +47,15 @@ public class createShowForm extends javax.swing.JFrame {
             jComboBoxArtists.addItem(stageName);
         }
         
-        ResultSet res = DBConn.query("Select showPlace.placeNumber, Agent.agentId\n"+
-         "Form showPlace INNER JOIN (Agent INNER JOIN agentChoosePlace ON Agent.agentId = agentChoosePlace.agentId) ON showPlace.placeNumber = agentChoosePlace.placeNumber\n"+
-         "WHERE (((Agent.agentId)=[agentChoosePlace].[agentId]) AND ((showPalce.placeNumber)=[agentChoosePlace].[showPlace])AND ((Agent.agentId)))="+DBConn.getAgentConnected().getAgentID());
+        ResultSet res = DBConn.query("SELECT showPlace.placeName\n" +
+"FROM showPlace INNER JOIN agentChoosePlace ON showPlace.placeNumber = agentChoosePlace.placeNumber\n" +
+"WHERE (((agentChoosePlace.agentId)="+DBConn.getAgentConnected().getAgentID()+") AND ((agentChoosePlace.placeNumber)=[showPlace].[placeNumber]))");
          jComboBoxPlaces.removeAllItems();
          jComboBoxPlaces.addItem("Select show place");
              
          while(res.next()){
             // String 
+             System.err.println("k");
          }
             } catch (SQLException ex){
                  Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -243,11 +247,17 @@ public class createShowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxPlacesActionPerformed
 
     private void jComboBoxPlacesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxPlacesItemStateChanged
+        if(evt.getStateChange() != ItemEvent.SELECTED)
+            return;
+            
+        
+        if(evt.getItem().equals("Select Place"))
+            return;
         txtPlace.setText(jComboBoxPlaces.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBoxPlacesItemStateChanged
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        Show newShow = new Show(txtArtistName.getText(), txtPlace.getText());
+        //Show newShow = new Show(txtArtistName.getText(), txtPlace.getText());
             // TODO add your handling code here:
     }//GEN-LAST:event_jButton1MouseClicked
 
