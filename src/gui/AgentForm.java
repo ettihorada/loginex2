@@ -33,8 +33,10 @@ public class AgentForm extends javax.swing.JFrame {
     private void initComponents() {
 
         agentImage = new javax.swing.JLabel();
+        btnReport = new javax.swing.JButton();
         head = new javax.swing.JLabel();
         createShowForm = new javax.swing.JButton();
+        back = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,6 +44,20 @@ public class AgentForm extends javax.swing.JFrame {
 
         agentImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/images.jpg"))); // NOI18N
         getContentPane().add(agentImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 170, 110));
+
+        btnReport.setFont(new java.awt.Font("Perpetua Titling MT", 1, 11)); // NOI18N
+        btnReport.setText("REPORT");
+        btnReport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReportMouseClicked(evt);
+            }
+        });
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 160, -1));
 
         head.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
         head.setForeground(new java.awt.Color(255, 255, 255));
@@ -56,6 +72,19 @@ public class AgentForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(createShowForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 160, -1));
+
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button_1.jpg"))); // NOI18N
+        back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backMouseClicked(evt);
+            }
+        });
+        back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backActionPerformed(evt);
+            }
+        });
+        getContentPane().add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 445, 90, 30));
 
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
         bg.setText("what ");
@@ -79,8 +108,49 @@ public class AgentForm extends javax.swing.JFrame {
         createShowForm tmp = new createShowForm();
         this.setVisible(false);
         System.err.println("create show logged in");
-        tmp.setVisible(true);
+        tmp.setVisible(true);        
     }//GEN-LAST:event_createShowFormMouseClicked
+
+    private void createShowForm2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createShowForm2MouseClicked
+
+    }//GEN-LAST:event_createShowForm2MouseClicked
+
+    private void createShowForm2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createShowForm2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_createShowForm2ActionPerformed
+
+    private void createShowFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createShowFormActionPerformed
+         createShowForm tmp = new createShowForm();
+        this.setVisible(false);
+        System.err.println("create show logged in");
+        tmp.setVisible(true);
+    }//GEN-LAST:event_createShowFormActionPerformed
+
+    private void createShowForm1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createShowForm1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_createShowForm1MouseClicked
+
+    private void createShowForm1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createShowForm1ActionPerformed
+    }//GEN-LAST:event_createShowForm1ActionPerformed
+
+    private void btnReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseClicked
+       
+    }//GEN-LAST:event_btnReportMouseClicked
+
+    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+        ReportForm Rtmp = new ReportForm();
+        this.setVisible(false);
+        System.err.println("report logged in");
+        Rtmp.setVisible(true);       
+    }//GEN-LAST:event_btnReportActionPerformed
+
+    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
+      this.setVisible(false); 
+      new LoginForm().setVisible(true);      }//GEN-LAST:event_backMouseClicked
+
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,7 +189,9 @@ public class AgentForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel agentImage;
+    private javax.swing.JButton back;
     private javax.swing.JLabel bg;
+    private javax.swing.JButton btnReport;
     private javax.swing.JButton createShowForm;
     private javax.swing.JLabel head;
     // End of variables declaration//GEN-END:variables

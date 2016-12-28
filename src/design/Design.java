@@ -30,7 +30,6 @@ public abstract class Design extends Application{
             System.err.println("DB Successfully loaded");
             
             
-            System.err.println("Example Query");
             LoginForm login = new LoginForm();
             login.setVisible(true);
         

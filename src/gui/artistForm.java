@@ -15,10 +15,11 @@ public class artistForm extends javax.swing.JFrame {
      * Creates new form artistForm
      */
     public artistForm() {
-        initComponents();
-        setVisible(true);
         setUndecorated(true);
+        initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
+        System.err.println("Activated artistForm");
     }
 
     /**
@@ -31,21 +32,37 @@ public class artistForm extends javax.swing.JFrame {
     private void initComponents() {
 
         artist = new javax.swing.JLabel();
+        bak = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        artist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/artist.jpg"))); // NOI18N
-        getContentPane().add(artist, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 240, 140));
+        artist.setFont(new java.awt.Font("Perpetua Titling MT", 1, 24)); // NOI18N
+        artist.setForeground(new java.awt.Color(255, 255, 255));
+        artist.setText("Artist menu");
+        getContentPane().add(artist, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 210, 40));
+
+        bak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button_1.jpg"))); // NOI18N
+        bak.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bakMouseClicked(evt);
+            }
+        });
+        getContentPane().add(bak, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 100, 30));
 
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
         bg.setMaximumSize(new java.awt.Dimension(600, 540));
         bg.setMinimumSize(new java.awt.Dimension(600, 540));
-        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 0, 570, 440));
+        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 0, 410, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bakMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bakMouseClicked
+     this.setVisible(false); 
+      new LoginForm().setVisible(true);          // TODO add your handling code here:
+    }//GEN-LAST:event_bakMouseClicked
 
     /**
      * @param args the command line arguments
@@ -84,6 +101,7 @@ public class artistForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artist;
+    private javax.swing.JButton bak;
     private javax.swing.JLabel bg;
     // End of variables declaration//GEN-END:variables
 }

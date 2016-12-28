@@ -15,10 +15,10 @@ public class customerForm extends javax.swing.JFrame {
      * Creates new form customerForm
      */
     public customerForm() {
-        initComponents();
-        setVisible(true);
         setUndecorated(true);
+        initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
 
     }
 
@@ -32,13 +32,29 @@ public class customerForm extends javax.swing.JFrame {
     private void initComponents() {
 
         Customer = new javax.swing.JLabel();
+        bak = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Customer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Customer.jpg"))); // NOI18N
-        getContentPane().add(Customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 230, 90));
+        Customer.setFont(new java.awt.Font("Perpetua Titling MT", 1, 24)); // NOI18N
+        Customer.setForeground(new java.awt.Color(255, 255, 255));
+        Customer.setText("customer menu");
+        getContentPane().add(Customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 270, 60));
+
+        bak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button_1.jpg"))); // NOI18N
+        bak.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bakMouseClicked(evt);
+            }
+        });
+        bak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bakActionPerformed(evt);
+            }
+        });
+        getContentPane().add(bak, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 110, 30));
 
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
         bg.setMaximumSize(new java.awt.Dimension(600, 540));
@@ -47,6 +63,15 @@ public class customerForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bakActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bakActionPerformed
+
+    private void bakMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bakMouseClicked
+            this.setVisible(false); 
+      new LoginForm().setVisible(true);   // TODO add your handling code here:
+    }//GEN-LAST:event_bakMouseClicked
 
     /**
      * @param args the command line arguments
@@ -85,6 +110,7 @@ public class customerForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Customer;
+    private javax.swing.JButton bak;
     private javax.swing.JLabel bg;
     // End of variables declaration//GEN-END:variables
 }

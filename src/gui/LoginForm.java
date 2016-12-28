@@ -24,13 +24,26 @@ import entity.Show;
  */
 public class LoginForm extends javax.swing.JFrame {
 
+    Boolean skipLogin = true;
+
     /**
      * Creates new form createNewShow
      */
     public LoginForm() {
         setUndecorated(true);
+        if (skipLogin) {
+            Agent a = new Agent("111111111", "1");
+            DBConn.setAgentConnected(a);
+            JOptionPane.showMessageDialog(null, "Logged in as Agent!");
+            System.err.println("Agent logged in");
+            AgentForm ag = new AgentForm();
+            this.setVisible(false);
+            ag.setVisible(true);
+            return;
+        }
         initComponents();
         setLocationRelativeTo(null);
+
     }
 
     /**
@@ -77,7 +90,7 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblLogin);
-        lblLogin.setBounds(230, 410, 110, 50);
+        lblLogin.setBounds(230, 410, 100, 43);
 
         lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblUserName.setForeground(new java.awt.Color(255, 255, 255));
@@ -92,7 +105,7 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(lblExit);
-        lblExit.setBounds(20, 460, 50, 40);
+        lblExit.setBounds(20, 460, 40, 40);
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +118,7 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/muza.jpg"))); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(180, 230, 200, 90);
+        jLabel1.setBounds(180, 230, 190, 90);
 
         lblbackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bgColdpla.jpg"))); // NOI18N
         getContentPane().add(lblbackground);
@@ -131,12 +144,15 @@ public class LoginForm extends javax.swing.JFrame {
                 String CustomerID = rs.getString("customerId");
                 String firstName = rs.getString("FirstName");
                 //continue
-                
+
                 Customer c = new Customer(CustomerID, firstName);
                 DBConn.setCustomerConnected(c);
                 JOptionPane.showMessageDialog(null, "Logged in as Customer!");
-                
+                customerForm Cus = new customerForm();
+                this.setVisible(false);
+                Cus.setVisible(true);
                 return;
+
             }
 
             rs = DBConn.query("select * from Agent where agentId=\"" + user + "\" AND Password=\"" + pass + "\"");
@@ -148,25 +164,27 @@ public class LoginForm extends javax.swing.JFrame {
 
                 Agent a = new Agent(AgentID, FirstName);
                 DBConn.setAgentConnected(a);
+                JOptionPane.showMessageDialog(null, "Logged in as Agent!");
                 System.err.println("Agent logged in");
                 AgentForm ag = new AgentForm();
-                setVisible(false);
+                this.setVisible(false);
                 ag.setVisible(true);
                 return;
 
             }
-            rs = DBConn.query(")Select * from Artist Where alphanumericCode=\"" + user + "\" AND Password=\"" + pass + "\"");
+            rs = DBConn.query("select * from Artist Where alphanumericCode=\"" + user + "\" AND Password=\"" + pass + "\"");
 
             while (rs.next()) {
                 // Found artist
                 String alphanumericCode = rs.getString("alphanumericCode");
-                String stageName = rs.getString("stageName");
-
-                Artist art = new Artist(alphanumericCode, stageName);
+                String Password = rs.getString("Password");
+                System.err.println("etti");
+                Artist art = new Artist(alphanumericCode, Password);
                 DBConn.setArtistConnected(art);
-                JOptionPane.showMessageDialog(null, "Login successful !");
-                new createShowForm().setVisible(true);
-                this.dispose();
+                JOptionPane.showMessageDialog(null, "Login successful as Artist !");
+                artistForm af = new artistForm();
+                this.setVisible(false);
+                af.setVisible(true);
                 return;
             }
             //Cycle through agents
@@ -183,8 +201,8 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lblLoginMouseClicked
 
     private void lblExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblExitMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblExitMouseClicked
+        this.setVisible(false);
+         }//GEN-LAST:event_lblExitMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jButton1.setVisible(false);
