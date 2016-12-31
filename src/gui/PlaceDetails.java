@@ -93,11 +93,12 @@ public class PlaceDetails extends javax.swing.JFrame {
                 "Place Number", "Place Name", "Adderss", "E-mail", "Phone", "Google-Maps", "capacity"
             }
         ));
+        jTable1.setCellSelectionEnabled(true);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setRowHeight(25);
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 490, 50));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 540, 50));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button_1.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");

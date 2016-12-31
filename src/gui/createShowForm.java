@@ -28,7 +28,8 @@ public class createShowForm extends javax.swing.JFrame {
    String ag;
    java.sql.Date dte;
    ResultSet rs = null;
-Map<Integer, String> locationIndex;
+    Map<Integer, String> locationIndex;
+    Map<Integer, String> artistsIndex;
     /**
      * Creates new form createShow
      */
@@ -37,6 +38,7 @@ Map<Integer, String> locationIndex;
         initComponents();
         setLocationRelativeTo(null);
         locationIndex = new HashMap<Integer, String>();
+        artistsIndex = new HashMap<Integer, String>();
         System.err.println("Activated createShowForm");
      try
     {    
@@ -46,10 +48,12 @@ Map<Integer, String> locationIndex;
         jComboBoxPlaces.removeAllItems();
         jComboBoxPlaces.addItem("Select Place");
         txtArtistName.setText("Select Main Artist");
+        int j=1;
         while(rs.next()){
             String alphanumericCode = rs.getString("alphanumericCode");
             String stageName = rs.getString("stageName");
-             
+             artistsIndex.put(j, alphanumericCode);
+             j++;
             jComboBoxArtists.addItem(stageName);
         }
         
@@ -59,31 +63,12 @@ Map<Integer, String> locationIndex;
          jComboBoxPlaces.removeAllItems();
          jComboBoxPlaces.addItem("Select place");
          int i=1;
-         
          while(res.next()){
             String placeNumber = res.getString("placeNumber");
             String placeName = res.getString("placeName");
-            // {001} Zapa : 0
             locationIndex.put(i, placeNumber);
-            
-            
             i++;
-            
-            
             jComboBoxPlaces.addItem(placeName);
-            
-
-            
-         }
-        ResultSet ress = DBConn.query("SELECT * from Artist Where Artist.agentId=\""+DBConn.getAgentConnected().getAgentID()+"\"");
-         jComboBoxOtherArtists.removeAllItems();
-         jComboBoxOtherArtists.addItem("Select Other Artist");
-             
-         while(ress.next()){
-//            String appreciatedArtistId = ress.getString("appreciatedArtistId");
-            String stageName = ress.getString("stageName");
-            
-            jComboBoxOtherArtists.addItem(stageName);
          }
          
             } catch (SQLException ex){
@@ -104,20 +89,17 @@ Map<Integer, String> locationIndex;
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
+        bg = new javax.swing.JLabel();
         lblheadForm = new javax.swing.JLabel();
         mainArtist = new javax.swing.JLabel();
         jComboBoxArtists = new javax.swing.JComboBox<>();
         showPlace = new javax.swing.JLabel();
         jComboBoxPlaces = new javax.swing.JComboBox<>();
-        inviteOtherLabel = new javax.swing.JLabel();
         plus3 = new javax.swing.JLabel();
         txtArtistName = new javax.swing.JTextField();
         txtPlace = new javax.swing.JTextField();
-        listOtherArtists = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         add = new javax.swing.JButton();
         dates = new javax.swing.JButton();
-        jComboBoxOtherArtists = new javax.swing.JComboBox<>();
         back = new javax.swing.JButton();
         date = new javax.swing.JLabel();
         age = new javax.swing.JTextField();
@@ -127,9 +109,13 @@ Map<Integer, String> locationIndex;
         jLabel2 = new javax.swing.JLabel();
         min = new javax.swing.JSpinner();
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        txtArtistID = new javax.swing.JTextField();
+        inviteArtists = new javax.swing.JButton();
         price = new javax.swing.JTextField();
         hour = new javax.swing.JSpinner();
-        bg = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
+        bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -175,20 +161,15 @@ Map<Integer, String> locationIndex;
         });
         getContentPane().add(jComboBoxPlaces, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, 100, -1));
 
-        inviteOtherLabel.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
-        inviteOtherLabel.setForeground(new java.awt.Color(255, 255, 255));
-        inviteOtherLabel.setText("invite other artists");
-        getContentPane().add(inviteOtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 190, 30));
-
         plus3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/plus.jpg"))); // NOI18N
-        getContentPane().add(plus3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 60, 60));
+        getContentPane().add(plus3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 60, 60));
 
         txtArtistName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtArtistNameActionPerformed(evt);
             }
         });
-        getContentPane().add(txtArtistName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, 90, -1));
+        getContentPane().add(txtArtistName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, 60, -1));
 
         txtPlace.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,11 +178,7 @@ Map<Integer, String> locationIndex;
         });
         getContentPane().add(txtPlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, 60, -1));
 
-        jList1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        listOtherArtists.setViewportView(jList1);
-
-        getContentPane().add(listOtherArtists, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 80, 130));
-
+        add.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         add.setText("add show");
         add.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,8 +190,9 @@ Map<Integer, String> locationIndex;
                 addActionPerformed(evt);
             }
         });
-        getContentPane().add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 490, -1, -1));
+        getContentPane().add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 430, -1, -1));
 
+        dates.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         dates.setText("check place datails");
         dates.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -231,20 +209,7 @@ Map<Integer, String> locationIndex;
                 datesActionPerformed(evt);
             }
         });
-        getContentPane().add(dates, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 170, -1));
-
-        jComboBoxOtherArtists.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxOtherArtists.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxOtherArtistsItemStateChanged(evt);
-            }
-        });
-        jComboBoxOtherArtists.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxOtherArtistsActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jComboBoxOtherArtists, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 440, 140, -1));
+        getContentPane().add(dates, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 220, -1));
 
         back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button.jpg"))); // NOI18N
         back.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -257,13 +222,13 @@ Map<Integer, String> locationIndex;
                 backActionPerformed(evt);
             }
         });
-        getContentPane().add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, 100, 30));
+        getContentPane().add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 100, 30));
 
         date.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         date.setForeground(new java.awt.Color(255, 255, 255));
         date.setText("choose Show Date");
         getContentPane().add(date, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 170, -1));
-        getContentPane().add(age, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 90, -1));
+        getContentPane().add(age, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 90, -1));
 
         lblhour.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         lblhour.setForeground(new java.awt.Color(255, 255, 255));
@@ -274,37 +239,38 @@ Map<Integer, String> locationIndex;
         jLabel1.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("ticket price");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("minimum age");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, -1));
         getContentPane().add(min, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 40, -1));
         getContentPane().add(jXDatePicker1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, -1, -1));
-        getContentPane().add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 90, -1));
+
+        txtArtistID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtArtistIDActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtArtistID, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 60, -1));
+
+        inviteArtists.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
+        inviteArtists.setText("invite Other artists(option)");
+        inviteArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inviteArtistsMouseClicked(evt);
+            }
+        });
+        getContentPane().add(inviteArtists, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, -1, -1));
+        getContentPane().add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 90, -1));
         getContentPane().add(hour, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, 40, -1));
 
-        bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
-        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 550));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -110, 640, 710));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBoxOtherArtistsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxOtherArtistsActionPerformed
-    }//GEN-LAST:event_jComboBoxOtherArtistsActionPerformed
-
-    private void jComboBoxOtherArtistsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxOtherArtistsItemStateChanged
-        if(evt.getStateChange() != ItemEvent.SELECTED)
-            return;
- 
-        DefaultListModel lisrArt = new DefaultListModel();
-        for(int i=0 ; i < 10 ; i++){
-            lisrArt.addElement(jComboBoxArtists.getSelectedItem().toString());
-        }
-        jList1.setModel(lisrArt);
-            
-    }//GEN-LAST:event_jComboBoxOtherArtistsItemStateChanged
 
     private void txtPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPlaceActionPerformed
         // TODO add your handling code here:
@@ -324,7 +290,8 @@ Map<Integer, String> locationIndex;
             return;
         if(evt.getItem().equals("Select Main Artist"))
             return;
-        txtArtistName.setText(jComboBoxArtists.getSelectedItem().toString());       
+        txtArtistName.setText(jComboBoxArtists.getSelectedItem().toString());
+        txtArtistID.setText(""+jComboBoxArtists.getSelectedIndex());
     }//GEN-LAST:event_jComboBoxArtistsItemStateChanged
 
     private void jComboBoxPlacesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPlacesActionPerformed
@@ -338,22 +305,16 @@ Map<Integer, String> locationIndex;
         if(evt.getItem().equals("Select Place"))
             return;
         txtPlace.setText(jComboBoxPlaces.getSelectedItem().toString());
-        
         txtplaceNumber.setText(""+jComboBoxPlaces.getSelectedIndex());
         
     }//GEN-LAST:event_jComboBoxPlacesItemStateChanged
 
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-        //Show newShow = new Show(txtArtistName.getText(), txtPlace.getText());
-            // TODO add your handling code here:
+
     }//GEN-LAST:event_addMouseClicked
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-     //  try{
-    //       String sql = "Insert Into Show(showNumber,mainArtist, dateAndHourOfShow, placeNumber, status, ticketPrice,minimumAge,numberOfLeftTickets,agentcreatedId "
-    //   }
-     //  catch{  
-    //   }
+
     }//GEN-LAST:event_addActionPerformed
 
     private void datesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datesActionPerformed
@@ -381,6 +342,15 @@ Map<Integer, String> locationIndex;
     private void datesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_datesItemStateChanged
        
     }//GEN-LAST:event_datesItemStateChanged
+
+    private void txtArtistIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArtistIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtArtistIDActionPerformed
+
+    private void inviteArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inviteArtistsMouseClicked
+       this.setVisible(false); 
+      new inviteOtherArtistsForm(this, artistsIndex.get(jComboBoxArtists.getSelectedIndex())).setVisible(true);          // TODO add your handling code here:
+    }//GEN-LAST:event_inviteArtistsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -426,23 +396,22 @@ Map<Integer, String> locationIndex;
     private javax.swing.JLabel date;
     private javax.swing.JButton dates;
     private javax.swing.JSpinner hour;
-    private javax.swing.JLabel inviteOtherLabel;
+    private javax.swing.JButton inviteArtists;
     private javax.swing.JComboBox<String> jComboBoxArtists;
-    private javax.swing.JComboBox<String> jComboBoxOtherArtists;
     private javax.swing.JComboBox<String> jComboBoxPlaces;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     private javax.swing.JLabel lblheadForm;
     private javax.swing.JLabel lblhour;
-    private javax.swing.JScrollPane listOtherArtists;
     private javax.swing.JLabel mainArtist;
     private javax.swing.JSpinner min;
     private javax.swing.JLabel plus3;
     private javax.swing.JTextField price;
     private javax.swing.JLabel showPlace;
+    private javax.swing.JTextField txtArtistID;
     private javax.swing.JTextField txtArtistName;
     private javax.swing.JTextField txtPlace;
     private javax.swing.JTextField txtplaceNumber;

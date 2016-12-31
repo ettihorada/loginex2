@@ -24,23 +24,22 @@ import entity.Show;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    Boolean skipLogin = true;
 
     /**
      * Creates new form createNewShow
      */
     public LoginForm() {
         setUndecorated(true);
-        if (skipLogin) {
-            Agent a = new Agent("111111111", "1");
-            DBConn.setAgentConnected(a);
-            JOptionPane.showMessageDialog(null, "Logged in as Agent!");
-            System.err.println("Agent logged in");
-            AgentForm ag = new AgentForm();
-            this.setVisible(false);
-            ag.setVisible(true);
-            return;
-        }
+//        if (skipLogin) {
+//            Agent a = new Agent("111111111", "1");
+//            DBConn.setAgentConnected(a);
+//            JOptionPane.showMessageDialog(null, "Logged in as Agent!");
+//            System.err.println("Agent logged in");
+//            AgentForm ag = new AgentForm();
+//            this.setVisible(false);
+//            ag.setVisible(true);
+//            return;
+//        }
         initComponents();
         setLocationRelativeTo(null);
 
@@ -132,6 +131,7 @@ public class LoginForm extends javax.swing.JFrame {
         String ext = new String(jPasswordField1.getPassword());
         String user = jUserNameField1.getText();
         String pass = jPasswordField1.getText();
+
 
         //Cycle through customers
         //Search if user = customer

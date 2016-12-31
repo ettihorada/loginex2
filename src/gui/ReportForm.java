@@ -7,11 +7,17 @@ package gui;
 
 import design.DBConn;
 import design.Design;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +27,9 @@ import java.util.logging.Logger;
  */
 public class ReportForm extends javax.swing.JFrame {
 
+    int[] shows;
+    ResultSet rs = null;
+    String[][] st2;
     /**
      * Creates new form Report
      */
@@ -40,33 +49,44 @@ public class ReportForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLayeredPane3 = new javax.swing.JLayeredPane();
         lblheadForm = new javax.swing.JLabel();
         titleYear = new javax.swing.JLabel();
         ok = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        lblExit = new javax.swing.JLabel();
         jLayeredPane2 = new javax.swing.JLayeredPane();
+        jLabel1 = new javax.swing.JLabel();
         title = new javax.swing.JLabel();
         title2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         title4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         title5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         title6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
         title7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         title8 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        title9 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTextField2 = new javax.swing.JTextField();
         details = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField5 = new javax.swing.JTextField();
-        lblExit = new javax.swing.JLabel();
         bg1 = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jLayeredPane3Layout = new javax.swing.GroupLayout(jLayeredPane3);
+        jLayeredPane3.setLayout(jLayeredPane3Layout);
+        jLayeredPane3Layout.setHorizontalGroup(
+            jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jLayeredPane3Layout.setVerticalGroup(
+            jLayeredPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -90,10 +110,22 @@ public class ReportForm extends javax.swing.JFrame {
         });
         getContentPane().add(ok, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 90, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2015", "2016"}));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2016", "2017"}));
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 90, -1));
 
+        lblExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button.jpg"))); // NOI18N
+        lblExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblExitMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, -1, 50));
+
         jLayeredPane2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLayeredPane2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 100, 30));
 
         title.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
@@ -103,57 +135,53 @@ public class ReportForm extends javax.swing.JFrame {
         title2.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         title2.setForeground(new java.awt.Color(255, 255, 255));
         title2.setText("Balance:");
-        jLayeredPane2.add(title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, -1));
-        jLayeredPane2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 137, -1));
+        jLayeredPane2.add(title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, -1, -1));
 
         title4.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         title4.setForeground(new java.awt.Color(255, 255, 255));
         title4.setText("Total Revenues:");
-        jLayeredPane2.add(title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, -1, -1));
-        jLayeredPane2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 130, -1));
+        jLayeredPane2.add(title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
         title5.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         title5.setForeground(new java.awt.Color(255, 255, 255));
         title5.setText("regular sale:");
-        jLayeredPane2.add(title5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, -1, -1));
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        jLayeredPane2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 130, -1));
+        jLayeredPane2.add(title5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, -1));
 
         title6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         title6.setForeground(new java.awt.Color(255, 255, 255));
-        title6.setText("___________");
-        jLayeredPane2.add(title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, -1, -1));
-        jLayeredPane2.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 137, -1));
-        jLayeredPane2.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 137, -1));
+        title6.setText("________");
+        jLayeredPane2.add(title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 120, -1));
 
         title7.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         title7.setForeground(new java.awt.Color(255, 255, 255));
         title7.setText("Expenses:");
-        jLayeredPane2.add(title7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, -1, -1));
+        jLayeredPane2.add(title7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLayeredPane2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 100, 30));
+
+        jLabel3.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLayeredPane2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 100, 30));
+
+        jLabel4.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLayeredPane2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 80, 100, 30));
+
+        jLabel5.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLayeredPane2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 100, 30));
 
         title8.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
         title8.setForeground(new java.awt.Color(255, 255, 255));
         title8.setText("Presale:");
-        jLayeredPane2.add(title8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, -1, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/print-flat.png"))); // NOI18N
-        jLabel1.setText("jLabel1");
-        jLayeredPane2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 360, 60, 50));
-
-        title9.setFont(new java.awt.Font("Myanmar Text", 1, 18)); // NOI18N
-        title9.setForeground(new java.awt.Color(255, 255, 255));
-        title9.setText("revenues:");
-        jLayeredPane2.add(title9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
+        jLayeredPane2.add(title8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, -1, -1));
 
         jTextField2.setBackground(new java.awt.Color(0, 0, 0));
         jTextField2.setFont(new java.awt.Font("Myanmar Text", 3, 16)); // NOI18N
         jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("Choose a show for more details:");
+        jTextField2.setText("Choose one show for more details:");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -167,15 +195,16 @@ public class ReportForm extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/print-flat.png"))); // NOI18N
+        jButton1.setText("print");
+
+        jTable1.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "show number", "Presale", "Regular sale", "All Revenues", "Expenses", "Balance"
+                "Show Number","Main Artist", "Presale", "Regular sale", "All Revenues", "Expenses", "Balance"
             }
         ) {
             Class[] types = new Class [] {
@@ -186,6 +215,9 @@ public class ReportForm extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        jTable1.setToolTipText("");
+        jTable1.setRowHeight(20);
+        jTable1.setRowMargin(-7);
         jScrollPane1.setViewportView(jTable1);
 
         jTextField5.setBackground(new java.awt.Color(0, 0, 0));
@@ -200,6 +232,7 @@ public class ReportForm extends javax.swing.JFrame {
 
         jLayeredPane1.setLayer(jTextField2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(details, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jTextField5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -208,45 +241,40 @@ public class ReportForm extends javax.swing.JFrame {
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(details))
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(details)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(details)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(212, 212, 212))
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLayeredPane2.add(jLayeredPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 160, 780, 220));
+        jLayeredPane2.add(jLayeredPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 780, 270));
 
-        lblExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button.jpg"))); // NOI18N
-        lblExit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblExitMouseClicked(evt);
-            }
-        });
-        jLayeredPane2.add(lblExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, -1, 50));
-
-        getContentPane().add(jLayeredPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 780, 420));
+        getContentPane().add(jLayeredPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 780, 390));
 
         bg1.setBackground(new java.awt.Color(0, 0, 0));
         bg1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
@@ -273,23 +301,152 @@ public class ReportForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lblExitMouseClicked
 
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
+     
+        
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            
+            try (
+                    PreparedStatement stmt = DBConn.getConn().prepareStatement("SELECT Show.showNumber, Artist.stageName\n" +
+"FROM Artist INNER JOIN Show ON Artist.alphanumericCode = Show.mainArtist\n" +
+"WHERE (((?)=Year([show].[dateAndHourOfShow])))")) {
+                
+               
+                int year= Integer.parseInt((String)jComboBox1.getSelectedItem());
+                stmt.setLong(1,year);
+               ResultSet rs= stmt.executeQuery();
+                int count=0;
+                
+                double tPresalse=0;
+                double tSale=0;
+                double tRevenues=0;
+                double tExpenses=0;
+                double tBalance=0;
+                        
+             while(rs.next()){
+                 count++;
+             
+             }
+             TreeMap<Double,String> bala=new TreeMap<Double,String>();
+             shows=new int[count];
+                String [][] str1= new String[count][7];
+               int i=0;
+               ResultSet rs1= stmt.executeQuery();
+               while(rs1.next()){
+              
+          try(      PreparedStatement stmt2 = DBConn.getConn().prepareStatement("SELECT Sum(Orders.price) AS Sumfromprice\n" +
+"FROM Show INNER JOIN Orders ON Show.showNumber = Orders.showNumber\n" +
+"GROUP BY Orders.showNumber, Orders.presale\n" +
+"HAVING (((Orders.showNumber)=?) AND ((Orders.presale)=True))") ){
+              
+                 int showNum1=Integer.parseInt(rs1.getString(1));
+                stmt2.setLong(1,showNum1);
+               ResultSet rs2= stmt2.executeQuery();
+               
+               String s=null;
+                 while(rs2.next())
+                   s=rs2.getString(1);
+                 if(s==null)
+                     s="0";
+                   
+                 try(      PreparedStatement stmt3 = DBConn.getConn().prepareStatement("SELECT Sum(Orders.price) AS Sumformprice\n" +
+"FROM Orders\n" +
+"GROUP BY Orders.showNumber, Orders.presale\n" +
+"HAVING (((Orders.showNumber)=?) AND ((Orders.presale)=False))") ){
+                
+                stmt3.setLong(1,showNum1);
+               ResultSet rs3= stmt3.executeQuery();
+               
+               String s1=null;
+                 while(rs3.next())
+                   s1=rs3.getString(1);
+                 if(s1==null)
+                     s1="0";
+                 
+                
+                 double revenues=Double.parseDouble(s)+Double.parseDouble(s1);
+                 double expenses=revenues*0.3;
+                 double balance=revenues-expenses;
+             
+                
+                 
+                   str1[i][0]=rs1.getString(1);
+                   str1[i][1]=rs1.getString(2);
+                    str1[i][2]=s;
+                    str1[i][3]=s1;
+                    str1[i][4]=revenues+"";
+                    str1[i][5]=expenses+"";
+                    str1[i][6]=balance+"";
+
+                       bala.put(balance,""+showNum1);
+                       
+                          tPresalse+=Double.parseDouble(s);
+                          tSale+=Double.parseDouble(s1);
+                          tRevenues+=revenues;
+                          tExpenses+=expenses;
+                          tBalance+= (revenues-expenses);
+                           i++;
+
+               }
+ 
+               st2= new String[count][7];
+                
+               int x=count-1;
+                for(String d:bala.values())
+                { for (int p=0;p<count;p++)
+                        if(d.equals(str1[p][0])){
+                            for(int t=0;t<7;t++)
+                             st2[x][t]=str1[p][t];
+                            
+                            shows[x]=Integer.parseInt(str1[p][0]);
+                            }
+                x--;
+                }
+ 
+               String [] str= {
+        "Show Number","Main Artist", "Presale", "Regular sale", "All Revenues", "Expenses", "Balance"};
+               
+               jTable1.setModel(new javax.swing.table.DefaultTableModel(st2,str));
+            }
+          
+          jLabel5.setText(""+tPresalse);
+          jLabel1.setText(""+tSale);
+          jLabel2.setText(""+tRevenues);
+          jLabel3.setText(""+tExpenses);
+          jLabel4.setText(""+tBalance);
+               
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        
+       
+    
+        
+        
     jLayeredPane2.setVisible(true);
     
+    
+
      
         
     }//GEN-LAST:event_okActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void detailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsActionPerformed
+      if(jTable1.getSelectedRow()!=-1)
+        { int x= jTable1.getSelectedRow();
+    
         this.setVisible(false); 
-      new ShowDetails().setVisible(true);
+      new ShowDetails(shows[x],st2).setVisible(true);}
     }//GEN-LAST:event_detailsActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -335,19 +492,20 @@ public class ReportForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg1;
     private javax.swing.JButton details;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
+    private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblExit;
     private javax.swing.JLabel lblheadForm;
     private javax.swing.JButton ok;
@@ -358,7 +516,6 @@ public class ReportForm extends javax.swing.JFrame {
     private javax.swing.JLabel title6;
     private javax.swing.JLabel title7;
     private javax.swing.JLabel title8;
-    private javax.swing.JLabel title9;
     private javax.swing.JLabel titleYear;
     // End of variables declaration//GEN-END:variables
 }

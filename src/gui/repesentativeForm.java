@@ -9,17 +9,17 @@ package gui;
  *
  * @author Etti
  */
-public class artistForm extends javax.swing.JFrame {
+public class repesentativeForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form artistForm
+     * Creates new form repesentativeForm
      */
-    public artistForm() {
-        setUndecorated(true);
+    public repesentativeForm() {
+         setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
-        System.err.println("Activated artistForm");
+        System.err.println("Activated reprsentativeForm");
     }
 
     /**
@@ -31,17 +31,27 @@ public class artistForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        artist = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        rpt = new javax.swing.JButton();
         bak = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        artist.setFont(new java.awt.Font("Perpetua Titling MT", 1, 24)); // NOI18N
-        artist.setForeground(new java.awt.Color(255, 255, 255));
-        artist.setText("Artist menu");
-        getContentPane().add(artist, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 210, 40));
+        jLabel1.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("reprsentative Form");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 250, 50));
+
+        rpt.setFont(new java.awt.Font("Perpetua Titling MT", 1, 14)); // NOI18N
+        rpt.setText("report");
+        rpt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rptMouseClicked(evt);
+            }
+        });
+        getContentPane().add(rpt, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
         bak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-button_1.jpg"))); // NOI18N
         bak.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -49,19 +59,24 @@ public class artistForm extends javax.swing.JFrame {
                 bakMouseClicked(evt);
             }
         });
-        getContentPane().add(bak, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 100, 30));
+        getContentPane().add(bak, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 100, 30));
 
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bg.jpg"))); // NOI18N
-        bg.setMaximumSize(new java.awt.Dimension(600, 540));
-        bg.setMinimumSize(new java.awt.Dimension(600, 540));
-        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 0, 400, 300));
+        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, -8, 490, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void rptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rptMouseClicked
+        ReportForm Rtmp = new ReportForm();
+        this.setVisible(false);
+        System.err.println("report logged in");
+        Rtmp.setVisible(true);               // TODO add your handling code here:
+    }//GEN-LAST:event_rptMouseClicked
+
     private void bakMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bakMouseClicked
-     this.setVisible(false); 
-      new LoginForm().setVisible(true);          // TODO add your handling code here:
+         this.setVisible(false); 
+      new AgentForm().setVisible(true);  
     }//GEN-LAST:event_bakMouseClicked
 
     /**
@@ -81,27 +96,28 @@ public class artistForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(artistForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(repesentativeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(artistForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(repesentativeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(artistForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(repesentativeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(artistForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(repesentativeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new artistForm().setVisible(true);
+                new repesentativeForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel artist;
     private javax.swing.JButton bak;
     private javax.swing.JLabel bg;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton rpt;
     // End of variables declaration//GEN-END:variables
 }
