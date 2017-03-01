@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package design;
-import entity.Agent;
-import entity.Artist;
-import entity.Customer;
+import entity.*;
 import java.sql.*;
 import java.util.logging.*;
 /**
@@ -15,9 +13,10 @@ import java.util.logging.*;
  */
 public class DBConn {
     private static Connection conn;
-    private static Customer customerConnected;
-    private static Agent agentConnected;
-    private static Artist artistConnected;
+    private static artist artistConnected;
+    private static reprsentativeMuza repConnected;
+    private static freelancer freelancerConnected;
+
 
     
  public static Connection getConn() {
@@ -27,33 +26,43 @@ public class DBConn {
         DBConn.conn = conn;
     }
 
-    public static void setArtistConnected(Artist artistConnected) {
+    public static void setArtistConnected(artist artistConnected) {
         DBConn.artistConnected = artistConnected;
     }
-    public static Artist getArtistConnected() {
+    public static artist getArtistConnected() {
         return artistConnected;
     }
-   
-    public static Agent getAgentConnected() {
-        return agentConnected;
+    
+    public static void setRepConnected(reprsentativeMuza repConnected) {
+        DBConn.repConnected = repConnected;
     }
-    public static void setAgentConnected(Agent agentConnected) {
-        DBConn.agentConnected = agentConnected;
+    public static reprsentativeMuza getRepConnected(){
+        return repConnected;
+    }
+   public static void setFreelancerConnected(freelancer freelancerConnected) {
+        DBConn.freelancerConnected = freelancerConnected;
+    }
+    public static freelancer getFreelancerConnected(){
+        return freelancerConnected;
     }
     
-    public static void setCustomerConnected(Customer customerConnected) {
-        DBConn.customerConnected = customerConnected;
-    }
-    public static Customer getCustomerConnected() {
-        return customerConnected;
-    }
+    
 //add all
      
      
-    public DBConn(String dburl) throws ClassNotFoundException, SQLException{
+    public DBConn(String dburl) throws ClassNotFoundException{
         String driver="net.ucanaccess.jdbc.UcanaccessDriver";
         Class.forName(driver);
+        try{
         conn=DriverManager.getConnection("jdbc:ucanaccess://"+dburl);
+        } catch (SQLException ex) {
+            try{
+                conn=DriverManager.getConnection("jdbc:ucanaccess://src/"+dburl);
+            }
+            catch (SQLException ex2) {
+                Logger.getLogger(DBConn.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     } 
     
     public static ResultSet query(String SQL){

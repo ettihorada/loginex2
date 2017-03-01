@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Login.jnlp">
+  <information>
+    <title>Login</title>
+    <vendor>Etti</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Login.jar" size="548894" download="eager" />
+    <jar href="lib\AbsoluteLayout.jar" size="2903" download="eager" />
+    <jar href="lib\DateChooser.jar" size="514979" download="eager" />
+    <jar href="lib\DateChooserDemo.jar" size="39756" download="eager" />
+    <jar href="lib\commons-lang-2.6.jar" size="284220" download="eager" />
+    <jar href="lib\commons-logging-1.1.1.jar" size="60031" download="eager" />
+    <jar href="lib\hsqldb.jar" size="1467326" download="eager" />
+    <jar href="lib\jackcess-2.1.3.jar" size="817491" download="eager" />
+    <jar href="lib\jcalendar-1.1.4.jar" size="68310" download="eager" />
+    <jar href="lib\swingx-all-1.6.4.jar" size="1482526" download="eager" />
+    <jar href="lib\ucanaccess-3.0.7.jar" size="770613" download="eager" />
+    <jar href="lib\ucanload.jar" size="7807" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Login" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="design.Design"  name="Login" />
+  <update check="always"/>
+</jnlp>

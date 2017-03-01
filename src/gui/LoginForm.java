@@ -5,18 +5,21 @@
  */
 package gui;
 
+import mp3.mp3Player;
 import design.DBConn;
-import entity.Artist;
-import entity.Agent;
-import entity.Customer;
+import static design.Design.player;
+import entity.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import entity.Show;
+import javax.xml.transform.TransformerException;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 /**
  *
@@ -30,16 +33,6 @@ public class LoginForm extends javax.swing.JFrame {
      */
     public LoginForm() {
         setUndecorated(true);
-//        if (skipLogin) {
-//            Agent a = new Agent("111111111", "1");
-//            DBConn.setAgentConnected(a);
-//            JOptionPane.showMessageDialog(null, "Logged in as Agent!");
-//            System.err.println("Agent logged in");
-//            AgentForm ag = new AgentForm();
-//            this.setVisible(false);
-//            ag.setVisible(true);
-//            return;
-//        }
         initComponents();
         setLocationRelativeTo(null);
 
@@ -54,33 +47,85 @@ public class LoginForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jUserNameField1 = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         lblPassword = new javax.swing.JLabel();
+        head = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        signIn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         lblLogin = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         lblUserName = new javax.swing.JLabel();
         lblExit = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         lblbackground = new javax.swing.JLabel();
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/muza.jpg"))); // NOI18N
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(640, 500));
-        getContentPane().setLayout(null);
-        getContentPane().add(jUserNameField1);
-        jUserNameField1.setBounds(220, 330, 130, 30);
-        getContentPane().add(jPasswordField1);
-        jPasswordField1.setBounds(220, 370, 130, 30);
+        setMaximumSize(new java.awt.Dimension(525, 525));
+        setMinimumSize(new java.awt.Dimension(525, 525));
+        setPreferredSize(new java.awt.Dimension(400, 400));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jUserNameField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 130, 30));
+
+        jPasswordField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPasswordField1MouseEntered(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPasswordField1MousePressed(evt);
+            }
+        });
+        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 130, 30));
 
         lblPassword.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblPassword.setForeground(new java.awt.Color(255, 255, 255));
         lblPassword.setText("Password");
-        getContentPane().add(lblPassword);
-        lblPassword.setBounds(110, 370, 110, 40);
+        getContentPane().add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 110, 40));
+
+        head.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        head.setForeground(new java.awt.Color(255, 255, 255));
+        head.setText("Session In The Room");
+        getContentPane().add(head, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 190, -1, -1));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/download (4).jpg"))); // NOI18N
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 0, 40, 30));
+
+        signIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sign_in_button.png"))); // NOI18N
+        signIn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                signInMouseClicked(evt);
+            }
+        });
+        getContentPane().add(signIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, 90, 40));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("new in here?");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, 180, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("with us you will fly ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, -1, -1));
 
         lblLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblLogin.setForeground(new java.awt.Color(255, 255, 255));
-        lblLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
+        lblLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Untitled.png"))); // NOI18N
         lblLogin.setMaximumSize(new java.awt.Dimension(10, 8));
         lblLogin.setMinimumSize(new java.awt.Dimension(50, 30));
         lblLogin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,116 +133,110 @@ public class LoginForm extends javax.swing.JFrame {
                 lblLoginMouseClicked(evt);
             }
         });
-        getContentPane().add(lblLogin);
-        lblLogin.setBounds(230, 410, 100, 43);
+        getContentPane().add(lblLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, -1, 30));
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/like_us_fb.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 80, 30));
 
         lblUserName.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblUserName.setForeground(new java.awt.Color(255, 255, 255));
         lblUserName.setText("UserName");
-        getContentPane().add(lblUserName);
-        lblUserName.setBounds(110, 320, 100, 50);
+        getContentPane().add(lblUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, 100, 50));
 
-        lblExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout.png"))); // NOI18N
+        lblExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/download (3).jpg"))); // NOI18N
         lblExit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblExitMouseClicked(evt);
             }
         });
-        getContentPane().add(lblExit);
-        lblExit.setBounds(20, 460, 40, 40);
+        getContentPane().add(lblExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 40, 30));
 
-        jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(20, 460, 40, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/muza.jpg"))); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(180, 230, 190, 90);
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 30, 30));
 
         lblbackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bgColdpla.jpg"))); // NOI18N
-        getContentPane().add(lblbackground);
-        lblbackground.setBounds(0, 0, 530, 530);
+        getContentPane().add(lblbackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 530));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
 
-        String ext = new String(jPasswordField1.getPassword());
+      //  String ext = new String(jPasswordField1.getPassword());
         String user = jUserNameField1.getText();
         String pass = jPasswordField1.getText();
+           System.err.println(""+user);
+           System.err.println(""+pass);
 
-
-        //Cycle through customers
-        //Search if user = customer
+        //Cycle through artists
+        //Search if user = artist
         try {
-            ResultSet rs = DBConn.query("select * from Customer where Customer.customerId=\"" + user + "\" AND Customer.Password=\"" + pass + "\"");
 
-            while (rs.next()) {
+            ResultSet rs = DBConn.query("select * from artist Where alphnumericCode=\"" + user + "\" AND password=\"" + pass + "\"");
+            System.err.println(""+rs);
 
-                //Found Customer
-                String CustomerID = rs.getString("customerId");
-                String firstName = rs.getString("FirstName");
-                //continue
+           while (rs.next()) {
+               System.err.println(""+rs);
+               System.err.println(""+user);
+               System.err.println(""+pass);
 
-                Customer c = new Customer(CustomerID, firstName);
-                DBConn.setCustomerConnected(c);
-                JOptionPane.showMessageDialog(null, "Logged in as Customer!");
-                customerForm Cus = new customerForm();
-                this.setVisible(false);
-                Cus.setVisible(true);
-                return;
-
-            }
-
-            rs = DBConn.query("select * from Agent where agentId=\"" + user + "\" AND Password=\"" + pass + "\"");
-
-            while (rs.next()) {
-                //Found Agent
-                String AgentID = rs.getString("agentId");
-                String FirstName = rs.getString("firstName");
-
-                Agent a = new Agent(AgentID, FirstName);
-                DBConn.setAgentConnected(a);
-                JOptionPane.showMessageDialog(null, "Logged in as Agent!");
-                System.err.println("Agent logged in");
-                AgentForm ag = new AgentForm();
-                this.setVisible(false);
-                ag.setVisible(true);
-                return;
-
-            }
-            rs = DBConn.query("select * from Artist Where alphanumericCode=\"" + user + "\" AND Password=\"" + pass + "\"");
-
-            while (rs.next()) {
-                // Found artist
-                String alphanumericCode = rs.getString("alphanumericCode");
-                String Password = rs.getString("Password");
-                System.err.println("etti");
-                Artist art = new Artist(alphanumericCode, Password);
+               // Found artist
+                String alphnumericCode = rs.getString("alphnumericCode");
+                String password = rs.getString("password");
+                artist art = new artist(alphnumericCode, password);
                 DBConn.setArtistConnected(art);
+                System.err.println(""+alphnumericCode);
                 JOptionPane.showMessageDialog(null, "Login successful as Artist !");
-                artistForm af = new artistForm();
+                navigtionArtistForm navArt = new navigtionArtistForm(alphnumericCode);
                 this.setVisible(false);
-                af.setVisible(true);
+                navArt.setVisible(true);
                 return;
-            }
-            //Cycle through agents
-            //Search if user = agent
+           }
+                ResultSet res = DBConn.query("select * from reprsentativeMuza Where ID=\"" + user + "\" AND passwordRep=\"" + pass + "\"");
+                 while (res.next()) {
 
-            //.....
+                String ID = res.getString("ID");
+                String passwordRep = res.getString("passwordRep");
+                reprsentativeMuza rep = new reprsentativeMuza(ID, passwordRep);
+                DBConn.setRepConnected(rep);
+                JOptionPane.showMessageDialog(null, "Login successful as ReprsentativeMuza !");
+                navigtionRepForm navRep = new navigtionRepForm();
+                this.setVisible(false);
+                navRep.setVisible(true);
+               return;
+                 }
+                 
+                 ResultSet ress = DBConn.query("select * from freelancer Where freelancerId=\"" + user + "\" AND password=\"" + pass + "\"");
+                 while (ress.next()) {
+
+                String freelancerId = ress.getString("freelancerId");
+                String password = ress.getString("password");
+                freelancer freelancer = new freelancer(freelancerId, password);
+                DBConn.setFreelancerConnected(freelancer);
+                JOptionPane.showMessageDialog(null, "Login successful as freelancer !");
+                navigtionFreeForm free = new navigtionFreeForm();
+                this.setVisible(false);
+                free.setVisible(true);
+               return;
+                 }
+                 
+           
         } catch (SQLException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Login Faild!");
         return;
-
-
     }//GEN-LAST:event_lblLoginMouseClicked
 
     private void lblExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblExitMouseClicked
@@ -210,6 +249,38 @@ public class LoginForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void signInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signInMouseClicked
+        this.setVisible(false);
+        new artistSignIn().setVisible(true);       
+    }//GEN-LAST:event_signInMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+         design.Design.player.close();
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            String URL ="https://www.facebook.com/Seshenim-in-the-room-1185740488212493/";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jPasswordField1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MouseEntered
+    }//GEN-LAST:event_jPasswordField1MouseEntered
+
+    private void jPasswordField1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MousePressed
+                JOptionPane.showMessageDialog(null, "use only numbers");        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordField1MousePressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -247,8 +318,13 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel head;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jUserNameField1;
     private javax.swing.JLabel lblExit;
@@ -256,5 +332,6 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUserName;
     private javax.swing.JLabel lblbackground;
+    private javax.swing.JButton signIn;
     // End of variables declaration//GEN-END:variables
 }
